@@ -1,197 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Sigmatech Landing Page{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sigmatech Landing Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-    <style>
-        /* Custom styles */
-        body {
-            font-family: 'Roboto', sans-serif; /* Apply Google Font */
-        }
-
-        .slideshow-container {
-            height: 75vh;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .slideshow-container .carousel-item {
-            height: 100%;
-        }
-
-        .slideshow-container img {
-            object-fit: cover;
-            height: 100%;
-            width: 100%;
-        }
-
-        .welcome-message {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            text-align: center;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            border-radius: 10px;
-            z-index: 10;
-        }
-
-        /* Mobile screen adjustment for welcome message */
-        @media (max-width: 767px) {
-            .welcome-message {
-                top: 35%; /* Move up on mobile screens */
-            }
-        }
-
-        .content-columns {
-            padding: 40px 0;
-        }
-
-        .content-columns .col-md-4 {
-            position: relative; /* Required for the pseudo-element positioning */
-            padding: 20px;
-            background-color: white;
-            border: 2px solid transparent; /* Initially no border */
-            border-radius: 10px;
-            overflow: hidden; /* Ensure the pseudo-element does not overflow */
-            transition: transform 0.3s ease; /* Smooth transition for scaling */
-        }
-
-        .content-columns .col-md-4::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-left: 2px solid transparent;
-            border-right: 2px solid transparent;
-            border-top: 2px solid transparent; /* No top border */
-            border-bottom: 2px solid transparent; /* No bottom border */
-            opacity: 0;
-            transition: border-left 0.3s ease, border-right 0.3s ease, opacity 0.3s ease; /* Fade-in effect for borders */
-        }
-
-        .content-columns .col-md-4:hover::before {
-            border-left: 2px solid #007bff; /* Color for left border on hover */
-            border-right: 2px solid #007bff; /* Color for right border on hover */
-            opacity: 1;
-        }
-
-        .content-columns .col-md-4:hover {
-            transform: scale(1.05); /* Scale horizontally and vertically */
-        }
-
-        .footer {
-            background-color: black;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: 20px; /* Ensure there's space between content and footer */
-        }
-
-        /* Navbar styles */
-        .navbar {
-            padding: 0 15px; /* Adjust padding for the navbar */
-        }
-
-        .navbar-nav .nav-link {
-            position: relative;
-            display: inline-block;
-            padding: 12px 20px; /* Increased padding for navbar items */
-            color: black; /* Set navbar items color to black */
-            transition: all 0.3s ease;
-            text-transform: uppercase; /* Ensure text is in uppercase */
-        }
-
-        .navbar-nav .nav-link:before {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: #007bff;
-            visibility: hidden;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .navbar-nav .nav-link:hover:before {
-            visibility: visible;
-            width: 100%;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #007bff;
-            transform: scale(1.1);
-        }
-
-        /* Slideshow button styles */
-        .carousel-control-prev,
-        .carousel-control-next {
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for visibility */
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-        }
-
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            filter: invert(1); /* Invert icon color for better visibility */
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">SIGMATECH</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-home"></i> Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-info-circle"></i> About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Windowshop</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-sign-in-alt"></i> Sign In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-user-plus"></i> Sign Up</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
+{% block content %}
     <!-- Slideshow -->
     <div id="slideshow" class="carousel slide slideshow-container" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="C:\Users\universe\Pictures\Screenshots\1.png" class="d-block w-100" alt="Slide 1">
+                <img src="{% static 'images/7.jpg' %}" class="d-block w-100" alt="Slide 1">
             </div>
             <div class="carousel-item">
-                <img src="C:\Users\universe\Pictures\Screenshots\2.png" class="d-block w-100" alt="Slide 2">
+                <img src="{% static 'images/8.jpg' %}" class="d-block w-100" alt="Slide 2">
             </div>
             <div class="carousel-item">
-                <img src="C:\Users\universe\Pictures\Screenshots\3.png" class="d-block w-100" alt="Slide 3">
+                <img src="{% static 'images/9.jpg' %}" class="d-block w-100" alt="Slide 3">
             </div>
         </div>
         <div class="welcome-message">
@@ -233,15 +55,4 @@
             <p>This section provides additional information or features that might interest users.</p>
         </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 Sigmatech. All Rights Reserved.</p>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+{% endblock %}
