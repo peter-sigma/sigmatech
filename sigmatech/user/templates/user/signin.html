@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +16,7 @@
 
         .signin-container {
             height: 100vh;
-            background: url('2.png') no-repeat center center; /* Use relative path */
+            background: url("{% static 'images/2.jpg' %}") no-repeat center center; /* Use relative path */
             background-size: cover;
             display: flex;
             align-items: center;
@@ -135,27 +135,30 @@
         </div>
     </nav>
 
-    <!-- Sign In -->
-    <div class="signin-container">
-        <div class="signin-form">
-            <h2>Sign In</h2>
-            <form>
-                <div class="form-group">
-                    <i class="fas fa-envelope"></i>
-                    <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email" required>
-                </div>
-                <div class="form-group">
-                    <i class="fas fa-lock"></i>
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> Sign In
-                </button>
-            </form>
-        </div>
+<!-- Sign In -->
+<div class="signin-container">
+    <div class="signin-form">
+        <h2>Sign In</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <i class="fas fa-user"></i>
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Type in your username" required>
+            </div>
+            
+            <div class="form-group">
+                <i class="fas fa-lock"></i>
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Type in your password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
+        </form>
     </div>
+</div>
+
 
     <!-- Footer -->
     <footer class="footer">
