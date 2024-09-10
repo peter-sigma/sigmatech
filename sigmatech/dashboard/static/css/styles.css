@@ -1,0 +1,141 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.sidebar {
+    height: calc(100vh - 56px);
+    width: 250px;
+    background-color: #343a40;
+    color: white;
+    padding: 20px;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    z-index: 1000;
+    overflow-y: auto;
+    min-height: 80vh;
+}
+
+.sidebar h2 {
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.sidebar .nav-link {
+    color: #fff;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #495057;
+    border-radius: 5px;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 250px;
+    margin-top: 56px;
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 60px; /* Added padding to accommodate the footer */
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin: 20px 20px 0;
+}
+
+.dashboard-header {
+    margin-bottom: 20px;
+    z-index: 500;
+    position: relative;
+}
+.profile, .cart, .order {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile:hover, .cart:hover, .order:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+.footer {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.navbar-nav .nav-link {
+    position: relative;
+    display: inline-block;
+    padding: 12px 20px;
+    color: black;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.navbar-nav .nav-link:before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #007bff;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover:before {
+    visibility: visible;
+    width: 100%;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #007bff;
+    transform: scale(1.1);
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        top: 0;
+    }
+
+    .dashboard-container {
+        margin-left: 0;
+    }
+}

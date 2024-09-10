@@ -165,3 +165,80 @@ body {
 .carousel-control-next-icon {
     filter: invert(1); /* Invert icon color for better visibility */
 }
+
+
+.sidebar {
+    height: calc(100vh - 56px);
+    width: 250px;
+    background-color: #343a40;
+    color: white;
+    padding: 20px;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    z-index: 1000;
+    overflow-y: auto;
+    min-height: 80vh;
+}
+
+.sidebar h2 {
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.sidebar .nav-link {
+    color: #fff;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #495057;
+    border-radius: 5px;
+}
+
+
+ /* Add any additional styles here */
+ .sidebar {
+    height: calc(100vh - 56px);
+    width: 250px;
+    background-color: #343a40;
+    color: white;
+    padding: 20px;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    z-index: 1000;
+    overflow-y: auto;
+    min-height: 80vh;
+}
+
+.sidebar h2 {
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.sidebar .nav-link {
+    color: #fff;
+    margin-bottom: 10px;
+    transition: background-color 0.3s;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #495057;
+    border-radius: 5px;
+}
+.dashboard-header {
+    margin-bottom: 20px;
+    z-index: 500;
+    position: relative;
+}
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 250px;
+    margin-top: 56px;
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 60px; /* Added padding to accommodate the footer */
+}

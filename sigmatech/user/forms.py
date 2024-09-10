@@ -9,3 +9,22 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2', 'address']
+        
+        
+
+class SignInForm(forms.Form):
+    username = forms.CharField(
+        max_length=150, 
+        widget=forms.TextInput(attrs={
+            'class': 'form-control', 
+            'placeholder': 'Type in your username',
+            'id': 'username'
+        })
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control', 
+            'placeholder': 'Type in your password',
+            'id': 'password'
+        })
+    )

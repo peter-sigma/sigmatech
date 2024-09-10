@@ -1,0 +1,70 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Dashboard - Sigmatech{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <div class="dashboard-header">
+        <h1>Welcome, [Customer Name]</h1>
+    </div>
+        <p>Here you can view and manage your account information, orders, and more.</p>
+
+
+        <div class="row">
+            <!-- Profile Card -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body profile" >
+                        <h5 class="card-title">Profile</h5>
+                        <p class="card-text">Update your personal information and manage your account settings.</p>
+                        <a href="#" class="btn btn-primary"><i class="fas fa-user-edit"></i> Edit Profile</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Cart Card -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body cart">
+                        <h5 class="card-title">Cart</h5>
+                        <p class="card-text">View and manage the items in your shopping cart.</p>
+                        <a href="#" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> View Cart</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Orders Card -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body order">
+                        <h5 class="card-title">Orders</h5>
+                        <p class="card-text">Check the status of your recent orders and view your order history.</p>
+                        <a href="#" class="btn btn-primary"><i class="fas fa-box"></i> View Orders</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Additional Sections -->
+        <div class="row">
+            <!-- Settings Card -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body settings">
+                        <h5 class="card-title">Settings</h5>
+                        <p class="card-text">Manage your account settings and preferences.</p>
+                        <a href="#" class="btn btn-primary"><i class="fas fa-cog"></i> Go to Settings</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Help Card -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body help">
+                        <h5 class="card-title">Help</h5>
+                        <p class="card-text">Get help and support for any issues you may be facing.</p>
+                        <a href="#" class="btn btn-primary"><i class="fas fa-question-circle"></i> Get Help</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
