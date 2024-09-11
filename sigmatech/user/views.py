@@ -65,7 +65,7 @@ def edit_profile(request):
         form = ProfileForm(request.POST, request.FILES, instance=user_profile)
         if form.is_valid():
             form.save()
-            return redirect('dashboard')  # Redirect to the profile page or a success page
+            return redirect('profile')  # Redirect to the profile page or a success page
     else:
         form = ProfileForm(instance=user_profile)
     form = "form"
