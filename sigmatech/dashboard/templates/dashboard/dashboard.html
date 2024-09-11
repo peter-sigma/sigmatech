@@ -4,9 +4,9 @@
 
 {% block content %}
 <div class="main-content">
-    <div class="dashboard-header">
-        <h1>Welcome, [Customer Name]</h1>
-    </div>
+    <div class="dashboard-header d-flex justify-content-center">
+        <h1 class="text-center" style="font-family: 'Poppins', sans-serif; font-weight: 700;">Welcome, {{ username }}</h1>
+    </div>      
         <p>Here you can view and manage your account information, orders, and more.</p>
 
 
@@ -17,7 +17,7 @@
                     <div class="card-body profile" >
                         <h5 class="card-title">Profile</h5>
                         <p class="card-text">Update your personal information and manage your account settings.</p>
-                        <a href="#" class="btn btn-primary"><i class="fas fa-user-edit"></i> Edit Profile</a>
+                        <a href="{% url 'editprofile' %}" class="btn btn-primary"><i class="fas fa-user-edit"></i> Edit Profile</a>
                     </div>
                 </div>
             </div>

@@ -52,10 +52,10 @@
                         <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-user"></i> Profile</a>
+                        <a class="nav-link" href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+                        <a class="nav-link" href="{% url 'signout' %}"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
                     </li>
                 </ul>
             </div>
@@ -66,11 +66,11 @@
     <div class="sidebar">
         <h2>SIGMATECH</h2>
         <nav class="nav flex-column">
-            <a class="nav-link" href="#"><i class="fas fa-user"></i> Profile</a>
+            <a class="nav-link" href="{% url 'profile' %}"><i class="fas fa-user"></i> Profile</a>
             <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Cart</a>
             <a class="nav-link" href="#"><i class="fas fa-box"></i> Orders</a>
             <a class="nav-link" href="#"><i class="fas fa-cog"></i> Settings</a>
-            <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <a class="nav-link" href="{% url 'signout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </nav>
     </div>
 
