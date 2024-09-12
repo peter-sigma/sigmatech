@@ -9,6 +9,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!-- Custom Styles -->
+<style>
+    .dropdown-item {
+        text-transform: uppercase;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .category-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .category-card .card-title {
+        text-transform: uppercase;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .category-card:hover .card-title {
+        color: inherit;
+    }
+</style>
     <style>
         body {
             font-family: 'Roboto', sans-serif; /* Apply Google Font */
@@ -33,7 +59,35 @@
         .hero-image p {
             font-size: 1.25rem;
         }
-        
+        .dropdown-item {
+            text-transform: uppercase;
+            text-decoration: none;
+            color: inherit;
+        }
+    
+        .category-link {
+            text-decoration: none;
+            color: inherit;
+        }
+    
+        .category-card {
+            text-transform: uppercase;
+            text-decoration: none;
+            color: inherit;
+
+            position: relative; /* Required for the pseudo-element positioning */
+            padding: 20px;
+            
+            border: 2px solid transparent; /* Initially no border */
+            border-radius: 10px;
+            overflow: hidden; /* Ensure the pseudo-element does not overflow */
+            transition: transform 0.3s ease; /* Smooth transition for scaling */
+        }
+    
+        .category-card:hover  {
+            transform: scale(1.05);
+            color: inherit;
+        }
     </style>
     {% block extra_head %}{% endblock %}
 </head>
