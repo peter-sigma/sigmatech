@@ -14,6 +14,30 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <!-- Custom Styles -->
 <style>
+    
+    body {
+        font-family: 'Roboto', sans-serif; /* Apply Google Font */
+    }
+    
+    .hero-image {
+        background: url('/static/images/3.jpg') no-repeat center center;
+        background-size: cover;
+        height: 50vh; /* Adjust height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+    }
+    
+    .hero-image h1 {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .hero-image p {
+        font-size: 1.25rem;
+    }
     .dropdown-item {
         text-transform: uppercase;
         text-decoration: none;
@@ -25,70 +49,93 @@
         color: inherit;
     }
 
-    .category-card .card-title {
+    .category-card, .category-card .card-title {
         text-transform: uppercase;
+        text-decoration: none;
+        color: inherit;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .category-card:hover, .category-card:hover .card-title {
+        color: inherit;
+        transform: scale(1.05);
+    }
+
+
+    .product-link {
         text-decoration: none;
         color: inherit;
     }
 
-    .category-card:hover .card-title {
+    .product-image {
+        width: 100%;
+        max-height: 500px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+    .product-card, .product-card .card-title{
+        text-transform: uppercase;
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.3s ease;
+    }
+
+    .product-card:hover, .product-card:hover .card-title{
+        transform: scale(1.05);
         color: inherit;
     }
-</style>
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif; /* Apply Google Font */
-        }
-        
-        .hero-image {
-            background: url('/static/images/3.jpg') no-repeat center center;
-            background-size: cover;
-            height: 50vh; /* Adjust height */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
+    .product-image:hover {
+        transform: scale(1.05);
+    }
+
+    .product-details h2 {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .product-details p {
+        font-size: 1.1rem;
+        margin-top: 10px;
+    }
+
+    .product-price {
+        font-size: 1.5rem;
+        color: #28a745;
+        margin-top: 20px;
+    }
+
+    .quantity-input {
+        max-width: 120px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-primary i {
+        margin-right: 8px;
+    }
+
+    @media (max-width: 768px) {
+        .product-details {
             text-align: center;
         }
-        
-        .hero-image h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .hero-image p {
-            font-size: 1.25rem;
-        }
-        .dropdown-item {
-            text-transform: uppercase;
-            text-decoration: none;
-            color: inherit;
-        }
-    
-        .category-link {
-            text-decoration: none;
-            color: inherit;
-        }
-    
-        .category-card {
-            text-transform: uppercase;
-            text-decoration: none;
-            color: inherit;
 
-            position: relative; /* Required for the pseudo-element positioning */
-            padding: 20px;
-            
-            border: 2px solid transparent; /* Initially no border */
-            border-radius: 10px;
-            overflow: hidden; /* Ensure the pseudo-element does not overflow */
-            transition: transform 0.3s ease; /* Smooth transition for scaling */
+        .product-image {
+            max-height: 300px;
         }
-    
-        .category-card:hover  {
-            transform: scale(1.05);
-            color: inherit;
-        }
-    </style>
+    }
+</style>
+
     {% block extra_head %}{% endblock %}
 </head>
 

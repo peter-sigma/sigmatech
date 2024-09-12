@@ -1,0 +1,103 @@
+{% extends 'product/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-6 mb-4">
+            <img src="{{ product.image.url }}" class="img-fluid product-image" alt="{{ product.name }}">
+        </div>
+        <!-- Product Details -->
+        <div class="col-md-6">
+            <h2 class="product-name">{{ product.name }}</h2>
+            <p class="product-description">{{ product.description }}</p>
+            <h4 class="product-price">Price: ${{ product.price }}</h4>
+
+            <!-- Quantity Selection -->
+            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="quantity" class="form-label">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" class="form-control quantity-input" onchange="updateTotal()">
+                </div>
+
+                <!-- Total Price -->
+                <div class="mb-4">
+                    <h5 class="total-price">Total: $<span id="total-price">{{ product.price }}</span></h5>
+                </div>
+
+                <!-- Add to Cart Button -->
+                <button type="submit" class="btn btn-primary w-100 mb-2">Add to Cart</button>
+
+                <!-- Back Button -->
+                <a href="{% url 'catalog' %}" class="btn btn-secondary w-100">Back</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block styles %}
+<style>
+    .product-image {
+        max-height: 400px;
+        object-fit: cover;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    .product-name {
+        font-family: 'Roboto', sans-serif;
+        font-weight: bold;
+    }
+
+    .product-description {
+        font-family: 'Roboto', sans-serif;
+        margin-top: 15px;
+    }
+
+    .product-price {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+        margin-top: 15px;
+    }
+
+    .quantity-input {
+        max-width: 120px;
+    }
+
+    .total-price {
+        font-family: 'Roboto', sans-serif;
+        color: #333;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function updateTotal() {
+            var quantity = document.getElementById('quantity').value;
+            var price = {{ product.price }};
+            var total = quantity * price;
+            document.getElementById('total-price').innerText = total.toFixed(2);
+        }
+
+        // Attach event listener to quantity input
+        document.getElementById('quantity').addEventListener('input', updateTotal);
+        
+        // Initialize total on page load
+        updateTotal();
+    });
+</script>
+{% endblock %}

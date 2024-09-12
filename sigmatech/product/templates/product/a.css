@@ -1,0 +1,146 @@
+{% extends 'product/base.html' %}
+
+{% block content %}
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .product-image {
+        width: 100%;
+        max-height: 500px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .product-image:hover {
+        transform: scale(1.05);
+    }
+
+    .product-details h2 {
+        font-size: 2rem;
+        font-weight: 700;
+    }
+
+    .product-details p {
+        font-size: 1.1rem;
+        margin-top: 10px;
+    }
+
+    .product-price {
+        font-size: 1.5rem;
+        color: #28a745;
+        margin-top: 20px;
+    }
+
+    .quantity-input {
+        max-width: 120px;
+    }
+
+    .total-price {
+        font-size: 1.25rem;
+        color: #333;
+        margin-top: 10px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-primary i {
+        margin-right: 8px;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    @media (max-width: 768px) {
+        .product-details {
+            text-align: center;
+        }
+
+        .product-image {
+            max-height: 300px;
+        }
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Product Image -->
+            <img src="{{ product.image.url }}" class="img-fluid product-image" alt="{{ product.name }}">
+        </div>
+        <div class="col-md-6 product-details">
+            <!-- Product Details -->
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <h4 class="product-price">Price: ${{ product.price }}</h4>
+
+            <!-- Quantity Selection -->
+            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <div class="input-group mb-3 quantity-input">
+                    <span class="input-group-text">Quantity</span>
+                    <input type="number" id="quantity" name="quantity" value="{{ quantity }}" min="1" class="form-control" oninput="calculateTotal()">
+                </div>
+
+                <!-- Total Price -->
+                <h5 class="total-price">Total: $<span id="total-price">{{ product.price }}</span></h5>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between mt-4">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                    <a href="{% url 'catalog' %}" class="btn btn-secondary w-100">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Calculate and display the total price based on quantity
+    function calculateTotal() {
+        const quantity = parseInt(document.getElementById('quantity').value, 10);
+        const priceText = document.querySelector('.product-price').innerText.replace('Price: $', '');
+        const price = parseFloat(priceText);
+
+        // Check if the parsed values are valid numbers
+        if (isNaN(quantity) || isNaN(price)) {
+            document.getElementById('total-price').innerText = '0.00';
+            return;
+        }
+
+        // Calculate total price
+        const totalPrice = (quantity * price).toFixed(2);
+        document.getElementById('total-price').innerText = totalPrice;
+    }
+
+    // Initialize total price on page load
+    document.addEventListener('DOMContentLoaded', (event) => {
+        calculateTotal();
+    });
+</script>
+
+{% endblock %}

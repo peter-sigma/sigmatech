@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Category, Product
 from django.db.models import Q
 from django.http import JsonResponse
@@ -52,3 +52,17 @@ def autocomplete(request):
         return JsonResponse(suggestions, safe=False)
 
     return JsonResponse([], safe=False)  # Return empty list if no query
+
+
+def add_to_cart(request, product_id):
+     # Get the product by ID or return 404 if not found
+    product = get_object_or_404(Product, id=product_id)
+    
+    # Set default quantity to 1
+    quantity = request.GET.get('quantity', 1)
+    
+    return render(request, 'product/add_to_cart.html', {
+        'product': product,
+        'quantity': quantity,
+    })
+   

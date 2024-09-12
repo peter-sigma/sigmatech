@@ -64,15 +64,16 @@
             {% if products %}
                 {% for product in products %}
                 <div class="col-md-3 mb-4">
-                    <div class="card product-card">
-                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text">price : ${{ product.price }}</p>
-                            <p class="card-text">Description : {{ product.description }}</p>
-                            <button class="btn btn-primary w-100">Add to Cart</button>
+                    <a href="{% url 'add_to_cart' product.id %}" class="product-link">
+                        <div class="card product-card">
+                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                <p class="card-text">Price: ${{ product.price }}</p>
+                                <p class="card-text">Description: {{ product.description }}</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 {% endfor %}
             {% else %}
@@ -81,8 +82,6 @@
         </div>
     </div>
 {% endblock %}
-
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
