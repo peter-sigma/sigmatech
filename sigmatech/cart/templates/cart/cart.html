@@ -3,32 +3,208 @@
 {% block title %}Cart - Sigmatech{% endblock %}
 
 {% block content %}
+<!-- Cart Heading -->
 <h1 class="mb-4">Your Cart</h1>
-{% if cart_items %}
-    {% for item in cart_items %}
-    <div class="cart-item">
-        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
-        <div class="item-details">
-            <h5>{{ item.product.name }}</h5>
-            <p>${{ item.product.price }}</p>
-            <div class="item-quantity d-flex align-items-center">
-                <label for="quantity-{{ item.id }}" class="me-2">Quantity:</label>
-                <input type="number" id="quantity-{{ item.id }}" value="{{ item.quantity }}" min="1">
-            </div>
-        </div>
-        <form method="POST" action="{% url 'remove_from_cart' item.id %}">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger btn-remove ms-3">Remove</button>
-        </form>
-    </div>
-    {% endfor %}
 
-    <!-- Total Amount and Checkout Button -->
-    <div class="mt-4 d-flex justify-content-between align-items-center">
-        <h3>Total: ${{ total_amount }}</h3>
-        <a href="{% url 'checkout' %}" class="btn btn-primary">Proceed to Checkout</a>
+{% if cart_items %}
+    <!-- Cart Items Table -->
+    <div class="container">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr class="cart-item" data-item-id="{{ item.id }}" data-item-price="{{ item.product.price }}">
+                    <!-- Product Image and Name -->
+                    <td class="d-flex align-items-center">
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid rounded" style="max-width: 80px; margin-right: 15px;">
+                        <span>{{ item.product.name }}</span>
+                    </td>
+                    
+                    <!-- Product Price -->
+                    <td>${{ item.product.price }}</td>
+                    
+                    <!-- Quantity Input -->
+                    <td>
+                        <input type="number" id="quantity-{{ item.id }}" value="{{ item.quantity }}" min="1" class="form-control" style="width: 70px;" oninput="showUpdateButton(this)">
+
+                        <!-- Update Button -->
+                        <button id="update-button-{{ item.id }}" class="btn btn-primary btn-sm mt-2" style="display: none;" onclick="updateCartItem({{ item.id }})">
+                            <i class="fas fa-sync"></i> Update
+                        </button>
+                    </td>
+                    
+                    <!-- Item Total Price -->
+                    <td class="item-total">${{ item.total_price }}</td>
+                    
+                    <!-- Remove Button -->
+                    <td>
+                        <form id="remove-item-form-{{ item.id }}" data-item-id="{{ item.id }}" method="POST" action="{% url 'remove_cart_item' item.id %}">
+                            {% comment %} {% url 'remove_cart_item' item.id %} {% endcomment %}
+                            {% csrf_token %}
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeCartItem({{ item.id }})">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Total and Checkout Button -->
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <h3>Total: $<span id="final-total">{{ total_amount }}</span></h3>
+            <a href="" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Proceed to Checkout</a>
+            {% comment %} {% url 'checkout' %} {% endcomment %}
+        </div>
     </div>
 {% else %}
     <p>Your cart is empty.</p>
 {% endif %}
+
+<script>
+    function showUpdateButton(inputElement) {
+        const row = inputElement.closest('tr.cart-item');
+        const itemId = row.dataset.itemId;
+        const updateButton = document.getElementById('update-button-' + itemId);
+        updateButton.style.display = 'block';
+        
+        // Update item total and final total in real-time
+        updateItemTotal(inputElement);
+    }
+
+    function updateCartItem(itemId) {
+        const inputElement = document.getElementById('quantity-' + itemId);
+        const quantity = parseInt(inputElement.value, 10);
+
+        updateCartItemOnServer(itemId, quantity)
+            .then(() => {
+                // Hide the update button after successful update
+                document.getElementById('update-button-' + itemId).style.display = 'none';
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function updateItemTotal(inputElement) {
+        const row = inputElement.closest('tr.cart-item');
+        const itemId = row.dataset.itemId;
+        const itemPrice = parseFloat(row.dataset.itemPrice);
+        const quantity = parseInt(inputElement.value, 10);
+        
+        const itemTotalElement = row.querySelector('.item-total');
+        const itemTotal = (quantity * itemPrice).toFixed(2);
+        
+        // Update the item total
+        itemTotalElement.innerText = '$' + itemTotal;
+
+        // Update the final total
+        updateFinalTotal();
+    }
+
+    function updateCartItemOnServer(itemId, quantity) {
+        const csrftoken = getCookie('csrftoken'); // Django CSRF token
+        
+        return fetch(`/cart/update_cart_item/${itemId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': csrftoken
+            },
+            body: new URLSearchParams({
+                'quantity': quantity
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Cart item updated successfully');
+            } else {
+                console.error('Failed to update cart item');
+                throw new Error('Failed to update cart item');
+            }
+        });
+    }
+
+    function updateFinalTotal() {
+        let finalTotal = 0;
+        document.querySelectorAll('.item-total').forEach(function(itemTotalElement) {
+            const itemTotal = parseFloat(itemTotalElement.innerText.replace('$', ''));
+            finalTotal += itemTotal;
+        });
+
+        document.getElementById('final-total').innerText = finalTotal.toFixed(2);
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function removeCartItem(itemId) {
+        const csrftoken = getCookie('csrftoken');
+        const form = document.getElementById('remove-item-form-' + itemId);
+        const removeUrl = form.action;
+    
+        fetch(removeUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Remove the cart item from the page
+                const row = document.querySelector(`tr.cart-item[data-item-id="${itemId}"]`);
+                row.remove();
+    
+                // Update the final total after item removal
+                updateFinalTotal();
+            } else {
+                alert('Failed to remove item from cart.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+    
+    // Initialize totals on page load
+    document.addEventListener('DOMContentLoaded', (event) => {
+        updateFinalTotal();
+    });
+</script>
+
+
+
+{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .cart-item {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 10px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>
 {% endblock %}

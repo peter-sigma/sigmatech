@@ -1,0 +1,25 @@
+function removeCartItem(itemId) {
+    const csrftoken = getCookie('csrftoken'); // Django CSRF token
+
+    fetch(`/cart/remove-cart-item/${itemId}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': csrftoken
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const row = document.querySelector(`tr.cart-item[data-item-id="${itemId}"]`);
+            row.remove();
+            updateFinalTotal();
+        } else {
+            alert('Failed to remove cart item. Please try again.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to remove cart item. Please check the console for details.');
+    });
+}

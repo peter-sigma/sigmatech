@@ -2,6 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Category, Product
 from django.db.models import Q
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from cart.models import Cart, CartItem
 
 def catalog_view(request):
     query = request.GET.get('q', '')  # Get the search query from the request
@@ -53,16 +56,44 @@ def autocomplete(request):
 
     return JsonResponse([], safe=False)  # Return empty list if no query
 
-
+# @login_required(login_url='signin')
 def add_to_cart(request, product_id):
-     # Get the product by ID or return 404 if not found
+    # Get the product by ID or return 404 if not found
     product = get_object_or_404(Product, id=product_id)
     
-    # Set default quantity to 1
-    quantity = request.GET.get('quantity', 1)
+    # Get the product by ID or return 404 if not found
+    product = get_object_or_404(Product, id=product_id)
     
+    # Get or create the cart for the current user
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    
+    if request.method == 'POST':
+        # Get the quantity from the form
+        quantity = int(request.POST.get('quantity', 1))
+
+        # Check if the product is already in the cart
+        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+
+        if created:
+            # Set the quantity for a new cart item
+            cart_item.quantity = quantity
+            messages.success(request, f"{product.name} added to your cart!")
+        else:
+            # Update the quantity if the product is already in the cart
+            cart_item.quantity += quantity
+            messages.success(request, f"{product.name} quantity updated in your cart!")
+        
+        # Save the cart item
+        cart_item.save()
+
+        # Redirect to the cart page or wherever appropriate
+        return redirect('cart')  # Assuming 'cart' is the URL name for the cart page
+    
+    else:
+        # For GET requests, show the product details with default/pre-filled quantity
+        quantity = request.GET.get('quantity', 1)
+
     return render(request, 'product/add_to_cart.html', {
         'product': product,
         'quantity': quantity,
     })
-   
