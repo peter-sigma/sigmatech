@@ -1,0 +1,46 @@
+{% extends 'cart/base.html' %}
+
+{% block title %}Payment Failed - Sigmatech{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <div class="card p-4 shadow-lg">
+        <div class="card-body">
+            <h1 class="text-danger mb-4"><i class="fas fa-times-circle"></i> Payment Failed</h1>
+            <p class="lead">Oops! Something went wrong while processing your payment.</p>
+            <p>Please try again or check your payment details.</p>
+            
+            <!-- Buttons -->
+            <div class="mt-4">
+                <a href="" class="btn btn-primary btn-lg">
+                    {% comment %} {% url 'retry_payment' %} {% endcomment %}
+                    <i class="fas fa-redo"></i> Retry Payment
+                </a>
+                <a href="{% url 'index' %}" class="btn btn-secondary btn-lg ms-3">
+                    <i class="fas fa-home"></i> Return to Homepage
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .card {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 10px;
+        border: none;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+</style>
+{% endblock %}

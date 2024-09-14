@@ -28,6 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+PAYPAL_CLIENT_ID = 'AcQsSpuXCSiNphc7Omc-KT9aW_FE-Kf_lLZR5FQO71wPB35M6NI_PEzg1OCjr6aQmdZvQ_wQbCBDP_nZ'
+PAYPAL_CLIENT_SECRET = 'EHrKJyj8tBnkKPnXwhzYjrwZZLnyvJe07KxaA65FhDyATnwpSBxO88xkgncbExH0WCDSZCShCBJgERWS'
+PAYPAL_MODE = 'sandbox'  # or 'live' for production
+
 
 # Application definition
 

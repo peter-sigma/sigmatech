@@ -1,0 +1,51 @@
+{% extends 'cart/base.html' %}
+
+{% block title %}Payment Successful - Sigmatech{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg p-4">
+                <div class="card-body">
+                    <h1 class="display-4 text-success mb-4"><i class="fas fa-check-circle"></i> Payment Successful</h1>
+                    <p class="lead mb-4">Thank you for your purchase! Your order has been placed successfully.</p>
+                    <p class="mb-5">You can now browse more products or check the status of your order.</p>
+                    
+                    <!-- Buttons for navigating to catalog and orders -->
+                    <div class="d-flex justify-content-center">
+                        <a href="{% url 'catalog' %}" class="btn btn-primary btn-lg me-3">
+                            <i class="fas fa-shopping-bag"></i> Continue Shopping
+                        </a>
+                        <a href="" class="btn btn-success btn-lg">
+                            {% comment %} {% url 'orders' %} {% endcomment %}
+                            <i class="fas fa-box"></i> View Orders
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_styles %}
+<style>
+    .card {
+        border-radius: 10px;
+        background-color: #f9f9f9;
+    }
+    
+    .btn-lg {
+        padding: 15px 30px;
+        font-size: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+        .btn-lg {
+            font-size: 1.1rem;
+            padding: 12px 25px;
+        }
+    }
+</style>
+{% endblock %}
