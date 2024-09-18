@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import path
-from .views import view_cart, update_cart_item, remove_cart_item, create_payment,execute_payment, cancel_payment
+from .views import view_cart, update_cart_item, remove_cart_item
+
+app_name = 'cart'
 
 urlpatterns = [
     path('cart/', view_cart, name='cart'),

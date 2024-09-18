@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from cart.models import Cart, CartItem
+from django.http import HttpResponseBadRequest
 
 def catalog_view(request):
     query = request.GET.get('q', '')  # Get the search query from the request
@@ -56,17 +57,27 @@ def autocomplete(request):
 
     return JsonResponse([], safe=False)  # Return empty list if no query
 
+
+
 @login_required(login_url='signin')
 def add_to_cart(request, product_id):
     # Get the product by ID or return 404 if not found
     product = get_object_or_404(Product, id=product_id)
     
-    # Get the product by ID or return 404 if not found
-    product = get_object_or_404(Product, id=product_id)
-    
     # Get or create the cart for the current user
-    cart, created = Cart.objects.get_or_create(user=request.user)
+    carts = Cart.objects.filter(user=request.user)
     
+    if carts.exists():
+        # Deactivate all carts for the user
+        carts.update(active=False)
+        # Get the latest cart (the one with the most recent created_at timestamp)
+        cart = carts.latest('created_at')
+        cart.active = True
+        cart.save()
+    else:
+        # Create a new cart if none exists
+        cart = Cart.objects.create(user=request.user, active=True)
+
     if request.method == 'POST':
         # Get the quantity from the form
         quantity = int(request.POST.get('quantity', 1))
@@ -87,7 +98,7 @@ def add_to_cart(request, product_id):
         cart_item.save()
 
         # Redirect to the cart page or wherever appropriate
-        return redirect('cart')  # Assuming 'cart' is the URL name for the cart page
+        return redirect('cart:cart')  # Assuming 'view_cart' is the URL name for the cart page
     
     else:
         # For GET requests, show the product details with default/pre-filled quantity

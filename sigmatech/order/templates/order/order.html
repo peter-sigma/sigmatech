@@ -1,0 +1,129 @@
+{% extends 'cart/base.html' %}
+
+{% block title %}Order - Sigmatech{% endblock %}
+
+{% block content %}
+<!-- Order Heading -->
+<h1 class="mb-4">Your Orders</h1>
+
+<!-- Loop through each order -->
+{% for order in orders %}
+    <!-- Card for each order -->
+    <div class="card order-card mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Order #{{ order.id }}</h4>
+            <p><strong>Status:</strong> <span id="order-status-{{ order.id }}">{{ order.status }}</span></p>
+            <p><strong>Placed on:</strong> {{ order.created_at }}</p>
+            <p><strong>Last updated:</strong> {{ order.updated_at }}</p>
+            <hr>
+
+            <!-- Order Items Table -->
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through each item in the current order -->
+                    {% if order.items.all %}
+                        {% for item in order.items.all %}
+                            <tr class="order-item">
+                                <!-- Product Image and Name -->
+                                <td class="d-flex align-items-center">
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid rounded" style="max-width: 80px; margin-right: 15px;">
+                                    <span>{{ item.product.name }}</span>
+                                </td>
+                                
+                                <!-- Product Price -->
+                                <td>${{ item.price|floatformat:2 }}</td>
+                                
+                                <!-- Quantity -->
+                                <td>{{ item.quantity }}</td>
+                                
+                                <!-- Item Total Price -->
+                                <td>${{ item.price|floatformat:2 }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4">No items found in this order.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <!-- Order Total -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <h3>Total: $<span id="final-total">{{ order.total_price|floatformat:2 }}</span></h3>
+                <!-- PayPal Checkout Button - Only shown if payment is pending and the order has items -->
+                {% if order.status == 'pending' and order.items.all %}
+                <form id="paypal-checkout-form" method="POST" action="{% url 'payment:create_payment' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="total_amount" value="{{ order.total_price }}">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-shopping-cart"></i> Proceed to Checkout
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<script>
+    const orderSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/orders/'
+    );
+
+    orderSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const orderId = data.order_id;
+        const orderStatus = data.order_status;
+
+        // Update the order status on the page
+        document.querySelector(`#order-status-${orderId}`).innerText = orderStatus;
+    };
+
+    orderSocket.onclose = function(e) {
+        console.error('WebSocket closed unexpectedly');
+    };
+
+    // Function to send order status updates
+    function updateOrderStatus(orderId, orderStatus) {
+        orderSocket.send(JSON.stringify({
+            'order_id': orderId,
+            'order_status': orderStatus
+        }));
+    }
+</script>
+
+{% block extra_styles %}
+<style>
+    .order-card {
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(to right, #f9f9f9, #fcfbfa);
+        border-radius: 8px; /* Rounded corners for the card */
+        width: 100%; /* Ensure full width */
+    }
+
+    .order-card-body {
+        background: linear-gradient(to right, #f9f9f9, #ffffff); /* Gradient background */
+        border-radius: 8px; /* Ensure corners are rounded */
+    }
+
+    .order-item {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+    }
+
+    .order-item:last-child {
+        border-bottom: none;
+    }
+</style>
+{% endblock %}
+{% endblock %}

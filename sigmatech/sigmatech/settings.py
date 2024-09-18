@@ -36,6 +36,8 @@ PAYPAL_MODE = 'sandbox'  # or 'live' for production
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,8 +50,17 @@ INSTALLED_APPS = [
     'product',
     'user',
     'cart',
-    'core',
+    'core',   
 ]
+
+ASGI_APPLICATION = 'sigmatech.asgi.application'
+WSGI_APPLICATION = 'sigmatech.wsgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,7 +90,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'sigmatech.wsgi.application'
+
 
 
 # Database

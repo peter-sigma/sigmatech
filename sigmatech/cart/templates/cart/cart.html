@@ -46,7 +46,7 @@
                     
                     <!-- Remove Button -->
                     <td>
-                        <form id="remove-item-form-{{ item.id }}" data-item-id="{{ item.id }}" method="POST" action="{% url 'remove_cart_item' item.id %}">
+                        <form id="remove-item-form-{{ item.id }}" data-item-id="{{ item.id }}" method="POST" action="{% url 'cart:remove_cart_item' item.id %}">
                             {% comment %} {% url 'remove_cart_item' item.id %} {% endcomment %}
                             {% csrf_token %}
                             <button type="button" class="btn btn-danger btn-sm" onclick="removeCartItem({{ item.id }})">

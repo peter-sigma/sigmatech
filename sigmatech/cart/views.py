@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.core.exceptions import MultipleObjectsReturned
 
 # Create your views here.
 from .models import Cart, CartItem
@@ -9,19 +10,59 @@ from django.views.decorators.http import require_POST
 import paypalrestsdk
 from django.conf import settings
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
+from order.models import Order, OrderItem
+
+@login_required(login_url='signin')
 def view_cart(request):
-    cart, created = Cart.objects.get_or_create(user=request.user)
+    try:
+        cart = Cart.objects.get(user=request.user, active=True)
+    except Cart.DoesNotExist:
+        cart = Cart.objects.create(user=request.user, active=True)
+    except MultipleObjectsReturned:
+        carts = Cart.objects.filter(user=request.user, active=True)
+        cart = carts.first()
+        carts.exclude(id=cart.id).update(active=False)
+
+    if request.method == 'POST' and 'checkout' in request.POST:
+        existing_order = Order.objects.filter(cart=cart).first()
+        
+        if existing_order:
+            # Redirect to the order list if an order already exists for this cart
+            return redirect('order:order_list')
+        else:
+            order = Order.objects.create(
+                user=request.user,
+                cart=cart,
+                status='pending'
+            )
+            
+            for cart_item in cart.items.all():
+                OrderItem.objects.create(
+                    order=order,
+                    product=cart_item.product,
+                    quantity=cart_item.quantity,
+                    price=cart_item.product.price,
+                )
+            
+            cart.items.all().delete()
+            cart.active = False
+            cart.save()
+            
+            new_cart = Cart.objects.create(user=request.user, active=True)
+            
+            return redirect('order:order_list')
+
     cart_items = cart.items.all()
     total_amount = sum(item.total_price() for item in cart_items)
+    
     context = {
         'cart_items': cart_items,
-        'total_amount': total_amount
+        'total_amount': total_amount,
     }
     return render(request, 'cart/cart.html', context)
 
-
-# cart/views.py
 
 
 @require_POST
@@ -53,63 +94,3 @@ def remove_cart_item(request, item_id):
         return JsonResponse({'success': False, 'error': 'Item not found'})
     
 
-# Configure PayPal SDK with credentials
-paypalrestsdk.configure({
-    "mode": settings.PAYPAL_MODE,  # sandbox or live
-    "client_id": settings.PAYPAL_CLIENT_ID,
-    "client_secret": settings.PAYPAL_CLIENT_SECRET
-})
-
-def create_payment(request):
-    payment = paypalrestsdk.Payment({
-        "intent": "sale",
-        "payer": {
-            "payment_method": "paypal"
-        },
-        "redirect_urls": {
-            "return_url": "http://localhost:8000/cart/payment/execute",
-            "cancel_url": "http://localhost:8000/cart/payment/cancel"
-        },
-        "transactions": [{
-            "item_list": {
-                "items": [{
-                    "name": "Item Name",
-                    "sku": "item",
-                    "price": "10.00",
-                    "currency": "USD",
-                    "quantity": 1
-                }]
-            },
-            "amount": {
-                "total": "10.00",
-                "currency": "USD"
-            },
-            "description": "Payment description"
-        }]
-    })
-
-    if payment.create():
-        for link in payment.links:
-            if link.method == "REDIRECT":
-                return redirect(link.href)  # Redirect to PayPal for payment approval
-    else:
-        return JsonResponse({'error': 'Error in creating payment'})
-    
-
-
-  
-def execute_payment(request):
-    payment_id = request.GET.get('paymentId')
-    payer_id = request.GET.get('PayerID')
-
-    payment = paypalrestsdk.Payment.find(payment_id)
-
-    if payment.execute({"payer_id": payer_id}):
-        return render(request, 'cart/payment_success.html')
-    else:
-        return render(request, 'cart/payment_failed.html')
-
-
-def cancel_payment(request):
-    # You can redirect the user back to the cart or a cancellation page
-    return redirect('cart')

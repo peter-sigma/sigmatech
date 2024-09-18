@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hello World WebSocket</title>
+</head>
+<body>
+    <h1>WebSocket Hello World</h1>
+    <div id="messages"></div>
+    <button id="sendMessage">Send Hello</button>
+    <script>
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/hello/');
+
+        socket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.getElementById('messages').innerHTML += `<p>${data.message}</p>`;
+        };
+
+        socket.onopen = function(e) {
+            console.log('WebSocket connection established');
+        };
+
+        socket.onclose = function(e) {
+            console.log('WebSocket connection closed');
+        };
+
+        document.getElementById('sendMessage').onclick = function() {
+            socket.send(JSON.stringify({
+                'message': 'Hello, World!'
+            }));
+        };
+    </script>
+</body>
+</html>
