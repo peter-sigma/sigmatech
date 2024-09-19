@@ -111,7 +111,7 @@
             font-weight: 700;
         }
 
-        .profile, .cart, .order, .settings, .help {
+        .profile, .cart, .order, .settings, .help, .category {
             position: relative; /* Required for the pseudo-element positioning */
             padding: 20px;
             
@@ -142,8 +142,12 @@
             background-color: #FFFDE7; /* Light yellow */
         }
         
-        .profile:hover, .cart:hover, .order:hover, .settings:hover, .help:hover {
+        .profile:hover, .cart:hover, .order:hover, .settings:hover, .help:hover, .category:hover {
             transform: scale(1.05); /* Scale horizontally and vertically */
+        }
+
+        .card {
+            overflow: hidden;
         }
         @media (max-width: 768px) {
             .sidebar {
