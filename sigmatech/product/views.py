@@ -14,8 +14,8 @@ def catalog_view(request):
     # Get all categories for the dropdown
     categories = Category.objects.all()
 
-    # Filter products based on query and selected category
-    products = Product.objects.all()
+    # Filter products based on query, category, and available stock
+    products = Product.objects.filter(quantity__gt=0)  # Exclude products with 0 quantity
 
     # Apply search query if provided
     if query:

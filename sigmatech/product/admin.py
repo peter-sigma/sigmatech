@@ -10,6 +10,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'category', 'image')  # Adjust the fields you want to display
+    list_display = ('name', 'price', 'category', 'image', 'quantity') 
     list_filter = ('category',)
-    search_fields = ('name', 'category__name')  # Search by product name and category name
+    search_fields = ('name', 'category__name')
+    

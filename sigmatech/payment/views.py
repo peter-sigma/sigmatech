@@ -86,9 +86,6 @@ def create_payment(request):
 
   
 @login_required
-
-
-
 def execute_payment(request):
     payment_id = request.GET.get('paymentId')
     payer_id = request.GET.get('PayerID')
@@ -110,15 +107,25 @@ def execute_payment(request):
         except Order.DoesNotExist:
             return render(request, 'payment/payment_failed.html', {'error': 'No pending order found for this cart.'})
         
-        # Create OrderItems from CartItems
+        # Create OrderItems from CartItems and decrement stock
         cart_items = CartItem.objects.filter(cart=cart)
         for cart_item in cart_items:
+            # Create the OrderItem
             OrderItem.objects.create(
                 order=order,
                 product=cart_item.product,
                 quantity=cart_item.quantity,
                 price=cart_item.product.price
             )
+            
+            # Decrement the product stock
+            product = cart_item.product
+            if product.quantity >= cart_item.quantity:
+                product.quantity -= cart_item.quantity
+                product.save()
+            else:
+                # Handle stock issues here (e.g., insufficient stock)
+                return render(request, 'payment/payment_failed.html', {'error': f'Insufficient stock for {product.name}'})
 
         # Update the order status to 'processing'
         order.status = 'processing'

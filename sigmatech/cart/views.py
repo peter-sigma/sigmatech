@@ -29,7 +29,6 @@ def view_cart(request):
         existing_order = Order.objects.filter(cart=cart).first()
         
         if existing_order:
-            # Redirect to the order list if an order already exists for this cart
             return redirect('order:order_list')
         else:
             order = Order.objects.create(
@@ -56,12 +55,21 @@ def view_cart(request):
 
     cart_items = cart.items.all()
     total_amount = sum(item.total_price() for item in cart_items)
+
+    # Pass product stock (quantity) to the frontend
+    cart_items_with_stock = [
+        {
+            'item': item,
+            'max_quantity': item.product.quantity  # Assuming this is the stock field in your Product model
+        } for item in cart_items
+    ]
     
     context = {
-        'cart_items': cart_items,
+        'cart_items': cart_items_with_stock,  # Updated context
         'total_amount': total_amount,
     }
     return render(request, 'cart/cart.html', context)
+
 
 
 

@@ -20,54 +20,44 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in cart_items %}
-                <tr class="cart-item" data-item-id="{{ item.id }}" data-item-price="{{ item.product.price }}">
-                    <!-- Product Image and Name -->
+                {% for item_info in cart_items %}
+                {% with item=item_info.item max_quantity=item_info.max_quantity %}
+                <tr class="cart-item" data-item-id="{{ item.id }}" data-item-price="{{ item.product.price }}" data-max-quantity="{{ max_quantity }}">
                     <td class="d-flex align-items-center">
                         <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="img-fluid rounded" style="max-width: 80px; margin-right: 15px;">
                         <span>{{ item.product.name }}</span>
                     </td>
-                    
-                    <!-- Product Price -->
                     <td>${{ item.product.price }}</td>
-                    
-                    <!-- Quantity Input -->
                     <td>
-                        <input type="number" id="quantity-{{ item.id }}" value="{{ item.quantity }}" min="1" class="form-control" style="width: 70px;" oninput="showUpdateButton(this)">
-
-                        <!-- Update Button -->
+                        <input type="number" id="quantity-{{ item.id }}" value="{{ item.quantity }}" min="1" max="{{ max_quantity }}" class="form-control" style="width: 70px;" oninput="showUpdateButton(this)">
                         <button id="update-button-{{ item.id }}" class="btn btn-primary btn-sm mt-2" style="display: none;" onclick="updateCartItem({{ item.id }})">
                             <i class="fas fa-sync"></i> Update
                         </button>
                     </td>
-                    
-                    <!-- Item Total Price -->
                     <td class="item-total">${{ item.total_price }}</td>
-                    
-                    <!-- Remove Button -->
                     <td>
                         <form id="remove-item-form-{{ item.id }}" data-item-id="{{ item.id }}" method="POST" action="{% url 'cart:remove_cart_item' item.id %}">
-                            {% comment %} {% url 'remove_cart_item' item.id %} {% endcomment %}
                             {% csrf_token %}
                             <button type="button" class="btn btn-danger btn-sm" onclick="removeCartItem({{ item.id }})">
                                 <i class="fas fa-trash"></i> Remove
                             </button>
-
                         </form>
                     </td>
                 </tr>
+                {% endwith %}
                 {% endfor %}
             </tbody>
+            
         </table>
 
         <!-- Total and Checkout Button -->
         <div class="d-flex justify-content-between align-items-center mt-4">
             <h3>Total: $<span id="final-total">{{ total_amount }}</span></h3>
              <!-- PayPal Checkout Button -->
-            <form id="paypal-checkout-form" method="POST" action="{% url 'payment:create_payment' %}">
+             <form id="paypal-checkout-form" method="POST" action="{% url 'payment:create_payment' %}">
                 {% csrf_token %}
                 <input type="hidden" name="total_amount" value="{{ total_amount }}">
-                <button type="submit" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" onclick="checkStockBeforeCheckout()">
                     <i class="fas fa-shopping-cart"></i> Proceed to Checkout
                 </button>
             </form>
@@ -78,6 +68,37 @@
 {% endif %}
 
 <script>
+    function checkStockBeforeCheckout() {
+        let hasInsufficientStock = false;
+        let message = "The following items exceed available stock:\n";
+        let adjustmentNeeded = false;
+    
+        document.querySelectorAll('.cart-item').forEach(function(row) {
+            const productName = row.querySelector('span').innerText;
+            const quantityInput = row.querySelector('input[type="number"]');
+            const quantity = parseInt(quantityInput.value);
+            const maxQuantity = parseInt(row.dataset.maxQuantity);
+    
+            console.log(`Checking product: ${productName}, Requested: ${quantity}, Available: ${maxQuantity}`);
+    
+            if (quantity > maxQuantity) {
+                hasInsufficientStock = true;
+                adjustmentNeeded = true;
+                message += `- ${productName}: Available ${maxQuantity}, Requested ${quantity}\n`;
+                quantityInput.value = maxQuantity; // Adjust quantity to available stock
+                showUpdateButton(quantityInput); // Show update button for this item
+            }
+        });
+    
+        if (hasInsufficientStock) {
+            alert(message + "\nPlease reduce the quantity for these items before proceeding.");
+        } else {
+            // No stock issues, proceed with the checkout
+            document.getElementById('paypal-checkout-form').submit();
+        }
+    }
+    
+
     function showUpdateButton(inputElement) {
         const row = inputElement.closest('tr.cart-item');
         const itemId = row.dataset.itemId;
