@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
+from order.models import Order
 
 
 # Create your views here.
@@ -28,6 +29,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from product.models import Category, Product
 from product.forms import CategoryForm, ProductForm
 from django.contrib.auth.decorators import user_passes_test
+from .forms import OrderStatusForm
 
 # Check if the user is admin
 def admin_only(user):
@@ -123,7 +125,74 @@ def admin_delete_category(request, category_id):
     
 @user_passes_test(admin_only)
 def admin_manage_orders(request):
-    return render(request, 'dashboard/manage_orders.html')
+     # Retrieve all orders
+    orders = Order.objects.all().order_by('-created_at')  # Latest orders first
+    for order in orders:
+        total_price = sum(item.price * item.quantity for item in order.items.all())
+        order.total_price = total_price
+        order.save()  # Save the updated total price to the database
+    # Calculate and save the total price for each order (if needed)
+
+    context = {
+        'orders': orders,
+    }
+    return render(request, 'dashboard/manage_orders.html', context)
+
+
+# Admin view to display order details
+def admin_view_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id)  # Fetch the specific order by ID
+    order_items = order.items.all()  # Get all items related to the order
+    # Calculate the total price by summing the total for each order item
+    total_price = sum(item.total_price() for item in order_items)
+    print(total_price)
+    context = {
+        'order': order,
+        'order_items': order_items,  # Pass order items to the template
+        'total_price': total_price,  # Pass the total price to the template
+    }
+    return render(request, 'dashboard/order_detail.html', context)
+
+
+@login_required(login_url='signin')
+def view_order(request, order_id):
+    # Fetch the order by its ID, return 404 if not found
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+
+    # Calculate the total price of the order if needed
+    total_price = sum(item.price * item.quantity for item in order.items.all())
+
+    # Pass the order details to the template
+    context = {
+        'order': order,
+        'total_price': total_price,
+    }
+
+    return render(request, 'dashboard/view_order.html', context)
+
+
+
+# View to update order status
+def admin_update_order_status(request, order_id):
+    order = get_object_or_404(Order, id=order_id)  # Fetch the order by ID
+
+    if request.method == 'POST':
+        form = OrderStatusForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Order {order.id} status updated to {order.status}.")
+            return redirect('dashboard:admin_view_order', order_id=order.id)  # Redirect back to order details
+    else:
+        form = OrderStatusForm(instance=order)
+
+    context = {
+        'order': order,
+        'form': form,
+    }
+
+    return render(request, 'dashboard/update_order_status.html', context)
+
+
 
 @user_passes_test(admin_only)
 def admin_manage_users(request):

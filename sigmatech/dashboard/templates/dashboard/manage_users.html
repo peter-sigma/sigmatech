@@ -1,0 +1,44 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Manage Users | Sigmatech{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <h2>Manage Users</h2>
+    <p>Manage registered users, their permissions, and roles.</p>
+
+    <!-- Users Table -->
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Iterate over users -->
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>
+                        <a href="{% url 'admin_edit_user' user.id %}" class="btn btn-warning btn-sm">
+                            <i class="fas fa-user-edit"></i> Edit
+                        </a>
+                        <a href="{% url 'admin_delete_user' user.id %}" class="btn btn-danger btn-sm">
+                            <i class="fas fa-user-times"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

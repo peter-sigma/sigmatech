@@ -1,0 +1,24 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Update Order Status{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <h2>Update Order #{{ order.id }} Status</h2>
+    <p>Current Status: <strong>{{ order.status }}</strong></p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.status.label_tag }}
+            {{ form.status }}
+        </div>
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-sync-alt"></i> Update Status
+        </button>
+        <a href="{% url 'dashboard:admin_view_order' order.id %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Order Details
+        </a>
+    </form>
+</div>
+{% endblock %}

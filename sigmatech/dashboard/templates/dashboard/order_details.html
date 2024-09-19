@@ -1,0 +1,40 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Order {{ order.id }} Details{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <h2>Order #{{ order.id }} Details</h2>
+    <p>Customer: {{ order.user.username }}</p>
+    <p>Status: {{ order.status }}</p>
+    <p>Date: {{ order.created_at }}</p>
+
+    <h4>Items in this order:</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order_items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.price }}</td>
+                <td>${{ item.total_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <p><strong>Total Order Amount: ${{ total_price }}</strong></p>
+
+    <a href="{% url 'dashboard:admin_manage_orders' %}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to Orders
+    </a>
+</div>
+{% endblock %}
