@@ -59,7 +59,7 @@ def autocomplete(request):
 
 
 
-@login_required(login_url='signin')
+@login_required(login_url='user:signin')
 def add_to_cart(request, product_id):
     # Get the product by ID or return 404 if not found
     product = get_object_or_404(Product, id=product_id)

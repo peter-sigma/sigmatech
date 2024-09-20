@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import login_required
 from cart.models import Cart
 from order.models import Order, OrderItem
 
-@login_required(login_url='signin')
+@login_required(login_url='user:signin')
 def order_list(request):
     # Ensure the user has exactly one active cart
     cart = Cart.objects.filter(user=request.user, active=True).first()

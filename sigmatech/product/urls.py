@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from .views import catalog_view, autocomplete, add_to_cart
 
+app_name = 'product'
 urlpatterns = [
     path('catalog/', catalog_view, name='catalog'),
     path('autocomplete/', autocomplete, name='autocomplete'),

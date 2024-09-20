@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 
 from order.models import Order, OrderItem
 
-@login_required(login_url='signin')
+@login_required(login_url='user:signin')
 def view_cart(request):
     try:
         cart = Cart.objects.get(user=request.user, active=True)

@@ -94,19 +94,19 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href=""><i class="fas fa-home"></i> Home</a>
+                        <a class="nav-link" href="{% url 'core:about' %}"><i class="fas fa-home"></i> Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'about' %}"><i class="fas fa-info-circle"></i> About</a>
+                        <a class="nav-link" href="{% url 'product:catalog' %}"><i class="fas "></i> Windowshop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'cart:cart' %}"><i class="fas fa-shopping-cart"></i> Cart</a>
+                        <a class="nav-link" href="{% url 'cart:cart' %}"><i class="fas "></i> Cart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'signin' %}"><i class="fas fa-sign-in-alt"></i> Sign In</a>
+                        <a class="nav-link" href="{% url 'order:order' %}"><i class="fas "></i> Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'signup' %}"><i class="fas fa-user-plus"></i> Sign Up</a>
+                        <a class="nav-link" href="{% url 'dashboard:dashboard' %}"><i class="fas "></i> Dashboard</a>
                     </li>
                 </ul>
             </div>

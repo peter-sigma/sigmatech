@@ -4,10 +4,17 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from order.models import Order
+from django.shortcuts import render, get_object_or_404, redirect
+from product.models import Category, Product
+from product.forms import CategoryForm, ProductForm
+from .forms import OrderStatusForm
+from django.utils import timezone
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 
 # Create your views here.
-@login_required(login_url='signin')
+@login_required(login_url='user:signin')
 def dashboard(request):
     username = request.user.username
     context = {
@@ -25,11 +32,7 @@ def admin_only(user):
 def admin_dashboard(request):
     return render(request, 'dashboard/admindashboard.html')
 
-from django.shortcuts import render, get_object_or_404, redirect
-from product.models import Category, Product
-from product.forms import CategoryForm, ProductForm
-from django.contrib.auth.decorators import user_passes_test
-from .forms import OrderStatusForm
+
 
 # Check if the user is admin
 def admin_only(user):
@@ -140,6 +143,7 @@ def admin_manage_orders(request):
 
 
 # Admin view to display order details
+@user_passes_test(admin_only)
 def admin_view_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)  # Fetch the specific order by ID
     order_items = order.items.all()  # Get all items related to the order
@@ -154,7 +158,7 @@ def admin_view_order(request, order_id):
     return render(request, 'dashboard/order_detail.html', context)
 
 
-@login_required(login_url='signin')
+@user_passes_test(admin_only)
 def view_order(request, order_id):
     # Fetch the order by its ID, return 404 if not found
     order = get_object_or_404(Order, id=order_id, user=request.user)
@@ -173,13 +177,28 @@ def view_order(request, order_id):
 
 
 # View to update order status
+@user_passes_test(admin_only)
 def admin_update_order_status(request, order_id):
     order = get_object_or_404(Order, id=order_id)  # Fetch the order by ID
 
     if request.method == 'POST':
         form = OrderStatusForm(request.POST, instance=order)
         if form.is_valid():
-            form.save()
+            order = form.save(commit=False)  # Save but don't commit to the DB yet
+            order.updated_at = timezone.now()  # Update the `updated_at` field
+            order.save()  # Now save the order
+
+            # Broadcast the status change to WebSocket clients (users)
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                'orders_group',  # Broadcast to the group users are connected to
+                {
+                    'type': 'order_status_update',
+                    'order_id': order.id,
+                    'order_status': order.status
+                }
+            )
+
             messages.success(request, f"Order {order.id} status updated to {order.status}.")
             return redirect('dashboard:admin_view_order', order_id=order.id)  # Redirect back to order details
     else:
@@ -191,7 +210,6 @@ def admin_update_order_status(request, order_id):
     }
 
     return render(request, 'dashboard/update_order_status.html', context)
-
 
 
 @user_passes_test(admin_only)

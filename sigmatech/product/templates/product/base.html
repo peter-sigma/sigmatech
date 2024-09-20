@@ -152,13 +152,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'catalog' %}"><i class="fas fa-home"></i> Catalog</a>
+                        <a class="nav-link" href="{% url 'core:index' %}"><i class="fas fa-home"></i> home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href=""><i class="fas fa-info-circle"></i> Order</a>
+                        <a class="nav-link" href="{% url 'product:catalog' %}"><i class="fas fa-info-circle"></i> Catalog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href=""><i class="fas fa-shopping-cart"></i> Cart</a>
+                        <a class="nav-link" href="{% url 'dashboard:dashboard' %}"><i class="fas "></i> dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'cart:cart' %}"><i class="fas fa-shopping-cart"></i> Cart</a>
                     </li>
                 </ul>
             </div>

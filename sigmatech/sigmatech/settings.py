@@ -17,6 +17,10 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# Enable i18n and l10n support
+USE_I18N = True
+USE_L10N = True
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -63,6 +67,7 @@ CHANNEL_LAYERS = {
 }
 
 MIDDLEWARE = [
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -71,6 +76,24 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Define the default language
+LANGUAGE_CODE = 'en'
+
+# Available languages
+LANGUAGES = [
+    ('en', 'English'),
+    ('fr', 'French'), 
+    ('sw', 'Swahili'),
+    # ('es', 'Spanish'),
+    # ('de', 'German'),
+]
+
+# Location of translation files
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
+
 
 ROOT_URLCONF = 'sigmatech.urls'
 

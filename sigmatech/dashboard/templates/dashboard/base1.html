@@ -175,16 +175,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard:dashboard' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                        <a class="nav-link" href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'cart:cart' %}"><i class="fas fa-shopping-cart"></i> Orders</a>
+                        <a class="nav-link" href="#"><i class="fas fa-shopping-cart"></i> Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'user:profile' %}"><i class="fas fa-user"></i> Profile</a>
+                        <a class="nav-link" href="#"><i class="fas fa-user"></i> Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'user:signout' %}"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+                        <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
                     </li>
                 </ul>
             </div>
@@ -197,10 +197,12 @@
     <div class="sidebar">
         <h2>SIGMATECH</h2>
         <nav class="nav flex-column">
-            <a class="nav-link" href="{% url 'user:profile' %}"><i class="fas fa-user"></i> Profile</a>
-            <a class="nav-link" href="{% url 'cart:cart' %}"><i class="fas fa-shopping-cart"></i> Cart</a>
-            <a class="nav-link" href="{% url 'order:order' %}"><i class="fas fa-box"></i> Orders</a>
-            <a class="nav-link" href="#"><i class="fas fa-cog"></i> Settings</a>
+            <a class="nav-link" href="{% url 'dashboard:admin_dashboard' %}"><i class="fas fa-user"></i> Dashboard</a>
+            <a class="nav-link" href="{% url 'dashboard:admin_manage_orders' %}"><i class="fas fa-shopping-cart"></i> Manage order</a>
+            <a class="nav-link" href="{% url 'dashboard:admin_manage_products' %}"><i class="fas fa-box"></i> Manage products</a>
+            <a class="nav-link" href="{% url 'dashboard:admin_manage_categories' %}"><i class="fas fa-cog"></i> Manage categories</a>
+            <a class="nav-link" href="#"><i class="fas fa-cog"></i> Manage users</a>
+            <a class="nav-link" href="#"><i class="fas fa-cog"></i> Manage settings</a>
             <a class="nav-link" href="{% url 'user:signout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </nav>
     </div>

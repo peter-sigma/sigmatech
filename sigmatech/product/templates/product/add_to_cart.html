@@ -96,7 +96,7 @@
             <h4 class="product-price">Price: ${{ product.price }}</h4>
 
             <!-- Quantity Selection -->
-            <form method="POST" action="{% url 'add_to_cart' product.id %}">
+            <form method="POST" action="{% url 'product:add_to_cart' product.id %}">
                 {% csrf_token %}
                 <div class="input-group mb-3 quantity-input">
                     <span class="input-group-text">Quantity</span>
@@ -111,7 +111,7 @@
                     <button type="submit" class="btn btn-primary w-100 mb-4">
                         <i class="fas fa-shopping-cart"></i> Add to Cart
                     </button>
-                    <a href="{% url 'catalog' %}" class="btn btn-secondary w-100">
+                    <a href="{% url 'product:catalog' %}" class="btn btn-secondary w-100">
                         <i class="fas fa-arrow-left"></i> Back
                     </a>
                 </div>

@@ -3,7 +3,7 @@
 {% block content %}
     <!-- Search Form -->
     <div class="container mt-5">
-        <form method="GET" action="{% url 'catalog' %}">
+        <form method="GET" action="{% url 'product:catalog' %}">
             <div class="input-group">
                 <input type="text" class="form-control" name="q" id="search-input" placeholder="Search for products or categories..." value="{{ query }}">
                 <button type="submit" class="btn btn-primary">Search</button>
@@ -64,7 +64,7 @@
             {% if products %}
                 {% for product in products %}
                 <div class="col-md-3 mb-4">
-                    <a href="{% url 'add_to_cart' product.id %}" class="product-link">
+                    <a href="{% url 'product:add_to_cart' product.id %}" class="product-link">
                         <div class="card product-card">
                             <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                             <div class="card-body">

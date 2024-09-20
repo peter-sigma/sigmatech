@@ -15,7 +15,7 @@
                 <div class="card-body profile">
                     <h5 class="card-title">Profile</h5>
                     <p class="card-text">Edit your profile information.</p>
-                    <a href="{% url 'profile' %}" class="btn btn-primary"><i class="fas fa-user"></i> Edit Profile</a>
+                    <a href="{% url 'user:profile' %}" class="btn btn-primary"><i class="fas fa-user"></i> Edit Profile</a>
                 </div>
             </div>
         </div>
@@ -25,7 +25,7 @@
                 <div class="card-body cart">
                     <h5 class="card-title">Cart</h5>
                     <p class="card-text">Review and manage items in your cart.</p>
-                    <a href="#" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Go to Cart</a>
+                    <a href="{% url 'cart:cart' %}" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Go to Cart</a>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
                 <div class="card-body orders">
                     <h5 class="card-title">Orders</h5>
                     <p class="card-text">Track your orders and view order history.</p>
-                    <a href="#" class="btn btn-primary"><i class="fas fa-box"></i> View Orders</a>
+                    <a href="{% url 'order:order' %}" class="btn btn-primary"><i class="fas fa-box"></i> View Orders</a>
                 </div>
             </div>
         </div>

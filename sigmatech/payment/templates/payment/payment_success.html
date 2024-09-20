@@ -14,10 +14,10 @@
                     
                     <!-- Buttons for navigating to catalog and orders -->
                     <div class="d-flex justify-content-center">
-                        <a href="{% url 'catalog' %}" class="btn btn-primary btn-lg me-3">
+                        <a href="{% url 'product:catalog' %}" class="btn btn-primary btn-lg me-3">
                             <i class="fas fa-shopping-bag"></i> Continue Shopping
                         </a>
-                        <a href="" class="btn btn-success btn-lg">
+                        <a href="{% url 'order:order' %}" class="btn btn-success btn-lg">
                             {% comment %} {% url 'orders' %} {% endcomment %}
                             <i class="fas fa-box"></i> View Orders
                         </a>
