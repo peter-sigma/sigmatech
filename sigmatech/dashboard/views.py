@@ -11,6 +11,8 @@ from .forms import OrderStatusForm
 from django.utils import timezone
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 # Create your views here.
@@ -114,7 +116,7 @@ def admin_edit_category(request, category_id):
     })
 
 # View to delete a category
-@login_required(login_url='signin')
+@login_required(login_url='user:signin')
 def admin_delete_category(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     if request.method == 'POST':
@@ -188,6 +190,15 @@ def admin_update_order_status(request, order_id):
             order.updated_at = timezone.now()  # Update the `updated_at` field
             order.save()  # Now save the order
 
+            # Send an email to the user about the order status update
+            send_mail(
+                subject=f'Order #{order.id} Status Update',
+                message=f'Hello {order.user.username},\n\nYour order #{order.id} has been {order.status}.\n\nThank you for shopping with us!',
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[order.user.email],
+                fail_silently=False,
+            )
+
             # Broadcast the status change to WebSocket clients (users)
             channel_layer = get_channel_layer()
             async_to_sync(channel_layer.group_send)(
@@ -210,7 +221,6 @@ def admin_update_order_status(request, order_id):
     }
 
     return render(request, 'dashboard/update_order_status.html', context)
-
 
 @user_passes_test(admin_only)
 def admin_manage_users(request):

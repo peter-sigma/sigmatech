@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm
 from .models import UserProfile
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 # Create your views here.
@@ -59,10 +61,21 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+
+            # Send a welcome email to the user
+            send_mail(
+                subject='Welcome to Sigmatech!',
+                message=f'Hello {user.username},\n\nThank you for signing up at Sigmatech! We are exited to have you.\n\nBest regards,\nThe Sigmatech Team',
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+
             return redirect('core:index') 
     else:
         form = CustomUserCreationForm()
     return render(request, 'user/signup.html', {'form': form})
+
 
 
 @login_required(login_url='user:signin')

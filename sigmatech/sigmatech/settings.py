@@ -36,6 +36,14 @@ PAYPAL_CLIENT_ID = 'AcQsSpuXCSiNphc7Omc-KT9aW_FE-Kf_lLZR5FQO71wPB35M6NI_PEzg1OCj
 PAYPAL_CLIENT_SECRET = 'EHrKJyj8tBnkKPnXwhzYjrwZZLnyvJe07KxaA65FhDyATnwpSBxO88xkgncbExH0WCDSZCShCBJgERWS'
 PAYPAL_MODE = 'sandbox'  # or 'live' for production
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'petergicheha39@gmail.com'
+EMAIL_HOST_PASSWORD = 'jtdl xlks zujj mirp'
+DEFAULT_FROM_EMAIL = 'support@sigmatech.com'
+
 
 # Application definition
 
