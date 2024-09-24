@@ -140,8 +140,9 @@ Real-Time Updates: Order status updates using Django Channels.
 Admin Dashboard: Manage products, categories, and orders.
 
 ### Project Structure
+
+
 sigmatech-online-ordering-system/
-│
 ├── cart/               # Handles the shopping cart functionality
 ├── core/               # Core settings and utilities
 ├── dashboard/          # Admin views and dashboard management
@@ -149,12 +150,13 @@ sigmatech-online-ordering-system/
 ├── payment/            # Payment integration (PayPal)
 ├── product/            # Product and category models and views
 ├── user/               # User authentication and profile management
-│
+|
 ├── templates/          # HTML templates
 ├── static/             # Static files (CSS, JS, images)
-│
+|
 ├── manage.py           # Django management script
 └── requirements.txt    # Project dependencies
+
 
 
 
