@@ -40,36 +40,36 @@ Before running the project, ensure you have the following installed:
 - Git
 - Virtualenv (optional but recommended)
 
-### Step 1: Clone the Repository
-```bash
+##### Step 1: Clone the Repository
+''' bash
 git clone https://github.com/peter-sigma/sigmatech.git
-cd sigmatech
+cd sigmatech '''
 
 
-## Step 2: 
+##### Step 2: 
 Create and Activate a Virtual Environment
 bash
 Copy code
 ### Create a virtual environment
 python -m venv env
 
-### Activate the virtual environment
+#### Activate the virtual environment
 #### On Windows
 env\Scripts\activate
 
 #### On macOS/Linux
 source env/bin/activate
-### Step 3: Install Dependencies
+##### Step 3: Install Dependencies
 bash
 Copy code
 pip install -r requirements.txt
-Step 4: Set Up the Database
+##### Step 4: Set Up the Database
 Run the following command to create the SQLite database and apply migrations:
 
 bash
 Copy code
 python manage.py migrate
-Step 5: Create a Superuser
+##### Step 5: Create a Superuser
 To access the admin dashboard, create a superuser account:
 
 bash
@@ -77,7 +77,7 @@ Copy code
 python manage.py createsuperuser
 Follow the prompts to set a username, email, and password.
 
-Step 6: Run the Development Server
+##### Step 6: Run the Development Server
 bash
 Copy code
 python manage.py runserver
