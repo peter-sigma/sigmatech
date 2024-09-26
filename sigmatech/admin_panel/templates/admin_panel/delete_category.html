@@ -1,0 +1,16 @@
+{% extends 'admin_panel/base1.html' %}
+
+{% block title %}Delete Category | Sigmatech{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Delete Category</h2>
+    <p>Are you sure you want to delete the category <strong>{{ category.name }}</strong>? This action cannot be undone.</p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a href="{% url 'dashboard:admin_manage_categories' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

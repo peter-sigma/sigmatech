@@ -1,6 +1,19 @@
 /* General Styles */
+
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #495057;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+  }
+  
 body {
     font-family: 'Roboto', sans-serif; /* Apply Google Font */
+    min-height: 75vh; /* Set minimum height for the body */
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Hero Image Styles */
@@ -10,6 +23,25 @@ body {
     height: 50vh;
 }
 
+ .hero-image {
+        background: url('/static/images/3.jpg') no-repeat center center;
+        background-size: cover;
+        height: 50vh; /* Adjust height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+    }
+    
+    .hero-image h1 {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .hero-image p {
+        font-size: 1.25rem;
+    }
 /* About Section Styles */
 .about-section {
     background: white;
@@ -34,8 +66,19 @@ body {
 .content-columns {
     padding: 40px 0;
 }
+.col-md-4 {
+    height: 500px;
+    position: relative; /* Required for the pseudo-element positioning */
+    padding: 20px;
+    background-color: white;
+    border: 2px solid transparent; /* Initially no border */
+    border-radius: 10px;
+    overflow: hidden; /* Ensure the pseudo-element does not overflow */
+    transition: transform 0.3s ease; /* Smooth transition for scaling */
+}
 
 .content-columns .col-md-4 {
+    height: auto;
     position: relative; /* Required for the pseudo-element positioning */
     padding: 20px;
     background-color: white;
@@ -127,7 +170,7 @@ body {
 }
 
 .slideshow-container img {
-    object-fit: cover;
+    object-fit: contain;
     height: 100%;
     width: 100%;
 }
@@ -148,7 +191,15 @@ body {
 /* Mobile screen adjustment for welcome message */
 @media (max-width: 767px) {
     .welcome-message {
-        top: 35%; /* Move up on mobile screens */
+        top: 20%;
+        width: 90%;
+    }
+    .welcome-message h1 {
+        font-size: 2rem; /* Smaller font size for mobile */
+    }
+
+    .welcome-message p {
+        font-size: 1rem; /* Smaller font size for mobile */
     }
 }
 
@@ -238,7 +289,213 @@ body {
     flex-direction: column;
     margin-left: 250px;
     margin-top: 56px;
-    min-height: 100vh;
+    min-height: 75vh;
     position: relative;
     padding-bottom: 60px; /* Added padding to accommodate the footer */
+}
+
+.category-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.category-card, .category-card .card-title {
+    text-transform: uppercase;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover, .category-card:hover .card-title {
+    color: inherit;
+    transform: scale(1.05);
+}
+
+
+.card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.product-link:hover, .category-link:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+.product-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.product-image {
+    /* width: 100%; */
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+.product-card, .product-card .card-title{
+    text-transform: uppercase;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover, .product-card:hover .card-title{
+    transform: scale(1.05);
+    color: inherit;
+}
+.product-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.product-details h2 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.product-details p {
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+.product-price {
+    font-size: 1.5rem;
+    color: #28a745;
+    margin-top: 20px;
+}
+
+.quantity-input {
+    max-width: 120px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-primary i {
+    margin-right: 8px;
+}
+
+.left {
+    text-align: left; /* Aligns the text to the left */
+    padding-left: 20px; /* Optional: Adds some left padding for spacing */
+}
+
+.left p {
+    margin: 10px 0; /* Optional: Adds spacing between paragraphs */
+    font-size: 16px; /* Optional: Sets a font size */
+    color: #333; /* Optional: Changes the text color */
+}
+
+.left a {
+    text-decoration: none; /* Removes underline from links */
+    color: #007bff; /* Sets the color of the links */
+    transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+.left a:hover {
+    color: #0056b3; /* Changes color on hover */
+}
+
+.right {
+    width: 45%; /* Right column takes 45% of the space */
+    /* You can add content later */
+}
+
+@media (max-width: 768px) {
+    .product-details {
+        text-align: center;
+    }
+
+    .product-image {
+        max-height: 300px;
+    }
+}
+.about-section {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: -50px;
+    z-index: 1;
+}
+
+.about-section h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.about-section p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+.mission-column, .history-column, .team-column {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mission-column:hover, .history-column:hover, .team-column:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.signup-container {
+    height: 100vh;
+    background: url("{% static 'images/2.jpg' %}") no-repeat center center; /* Use relative path */
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup-form {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.signup-form h2 {
+    margin-bottom: 20px;
+}
+
+.signup-form .form-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.signup-form .form-group i {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #007bff;
+}
+
+.signup-form .form-control {
+    padding-left: 2.5rem; /* Add space for icons */
+}
+
+.signup-form .btn {
+    width: 100%;
 }

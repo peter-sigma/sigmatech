@@ -36,24 +36,6 @@ def signin(request):
 
     return render(request, 'user/signin.html', {'form': form})
 
-    if request.method == "POST":
-        form = SignInForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, f"Welcome back, {username}!")
-                return redirect('dashboard:dashboard')  
-            else:
-                messages.error(request, "Invalid username or password.")
-        else:
-            messages.error(request, "Please correct the error below.")
-    else:
-        form = SignInForm()
-    
-    return render(request, 'user/signin.html', {'form': form})
 
 def signup(request):
     if request.method == "POST":

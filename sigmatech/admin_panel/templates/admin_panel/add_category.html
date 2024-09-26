@@ -1,0 +1,42 @@
+{% extends 'admin_panel/base1.html' %}
+
+{% block title %}Add Category | Sigmatech{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <h2>Add New Category</h2>
+    <p>Use the form below to create a new category for your store.</p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_name">Category Name:</label>
+            <input type="text" class="form-control" id="id_name" name="name" value="{{ form.name.value|default_if_none:'' }}" required>
+            {% if form.name.errors %}
+                <div class="alert alert-danger">
+                    {{ form.name.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group mb-4"> <!-- Added mb-4 to give space below file input -->
+            <label for="id_image">Category Image:</label>
+            <input type="file" class="form-control-file" id="id_image" name="image">
+            {% if form.image.errors %}
+                <div class="alert alert-danger">
+                    {{ form.image.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group"> <!-- Wrapping the buttons in a form-group for spacing -->
+            <button type="submit" class="btn btn-success mr-2"> <!-- Added mr-2 for spacing between buttons -->
+                <i class="fas fa-save"></i> Save Category
+            </button>
+            <a href="{% url 'admin_panel:admin_manage_categories' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Categories
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

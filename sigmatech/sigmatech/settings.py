@@ -16,7 +16,17 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Ensure you're using this
 
+
+
+# SESSION_COOKIE_DOMAIN = 'ngrok-free.app'
+# CSRF_COOKIE_DOMAIN = 'ngrok-free.app'
+
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://9259-102-212-11-2.ngrok-free.app',  # your actual ngrok URL
+]
 # Enable i18n and l10n support
 USE_I18N = True
 USE_L10N = True
@@ -30,7 +40,10 @@ SECRET_KEY = 'django-insecure-s(+#ekff0^bh*5ek85*_o9^=8$42tun8csfo)suv!&#p)+z!&@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost',
+    '127.0.0.1',
+    '9259-102-212-11-2.ngrok-free.app',
+    ]
 
 PAYPAL_CLIENT_ID = 'AcQsSpuXCSiNphc7Omc-KT9aW_FE-Kf_lLZR5FQO71wPB35M6NI_PEzg1OCjr6aQmdZvQ_wQbCBDP_nZ'
 PAYPAL_CLIENT_SECRET = 'EHrKJyj8tBnkKPnXwhzYjrwZZLnyvJe07KxaA65FhDyATnwpSBxO88xkgncbExH0WCDSZCShCBJgERWS'
@@ -62,7 +75,8 @@ INSTALLED_APPS = [
     'product',
     'user',
     'cart',
-    'core',   
+    'core',  
+    'admin_panel', 
 ]
 
 ASGI_APPLICATION = 'sigmatech.asgi.application'
@@ -84,6 +98,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 # Define the default language
 LANGUAGE_CODE = 'en'
@@ -181,3 +197,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGIN_URL = '/admin_panel/login/'  # Change to the admin login view
+LOGIN_REDIRECT_URL = '/admin_panel/dashboard/'
