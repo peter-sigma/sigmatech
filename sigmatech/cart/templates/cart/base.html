@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,64 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .navbar {
-            padding: 0 15px;
-        }
-
-        .navbar-nav .nav-link {
-            position: relative;
-            display: inline-block;
-            padding: 12px 20px;
-            color: black;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-        }
-
-        .navbar-nav .nav-link:before {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: #007bff;
-            visibility: hidden;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .navbar-nav .nav-link:hover:before {
-            visibility: visible;
-            width: 100%;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #007bff;
-            transform: scale(1.1);
-        }
-
-        .footer {
-            background-color: black;
-            color: white;
-            text-align: center;
-            padding: 20px 0;
-            margin-top: auto; /* Ensure footer stays at the bottom */
-            bottom: 0;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
         .btn-remove {
             background-color: #dc3545;
             color: white;
@@ -128,6 +73,36 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- WebSocket Notification Script -->
+    <script>
+        const orderSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/orders/'
+        );
+
+        orderSocket.onopen = function(e) {
+            console.log('WebSocket connection established');
+        };
+
+        orderSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const orderId = data.order_id;
+            const orderStatus = data.order_status;
+
+            // Show popup notification using SweetAlert
+            Swal.fire({
+                title: 'Order Update',
+                text: `Your order #${orderId} status has been updated to "${orderStatus}".`,
+                icon: 'info',
+                confirmButtonText: 'Okay'
+            });
+        };
+
+        orderSocket.onclose = function(e) {
+            console.error('WebSocket closed unexpectedly');
+        };
+    </script>
+
 </body>
 
 </html>
