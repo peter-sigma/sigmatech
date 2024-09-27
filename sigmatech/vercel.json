@@ -1,6 +1,6 @@
 {
     "builds": [{
-        "src": "sigmatech/wsgi.py",
+        "src": "sigmatech/asgi.py",
         "use": "@vercel/python",
         "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
     }],

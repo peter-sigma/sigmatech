@@ -38,11 +38,11 @@ USE_L10N = True
 SECRET_KEY = 'django-insecure-s(+#ekff0^bh*5ek85*_o9^=8$42tun8csfo)suv!&#p)+z!&@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost',
     '127.0.0.1',
-    '9259-102-212-11-2.ngrok-free.app',
+    '.vercel.app'
     ]
 
 PAYPAL_CLIENT_ID = 'AcQsSpuXCSiNphc7Omc-KT9aW_FE-Kf_lLZR5FQO71wPB35M6NI_PEzg1OCjr6aQmdZvQ_wQbCBDP_nZ'
