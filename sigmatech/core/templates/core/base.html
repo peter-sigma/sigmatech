@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -55,11 +56,39 @@
             </div>
             <p>&copy; 2024 Sigmatech. All Rights Reserved.</p>
         </div>
-        
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- WebSocket Notification Script -->
+    <script>
+        const orderSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/orders/'
+        );
+
+        orderSocket.onopen = function(e) {
+            console.log('WebSocket connection established');
+        };
+
+        orderSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const orderId = data.order_id;
+            const orderStatus = data.order_status;
+
+            // Show popup notification using SweetAlert
+            Swal.fire({
+                title: 'Order Update',
+                text: `Your order #${orderId} status has been updated to "${orderStatus}".`,
+                icon: 'info',
+                confirmButtonText: 'Okay'
+            });
+        };
+
+        orderSocket.onclose = function(e) {
+            console.error('WebSocket closed unexpectedly');
+        };
+    </script>
+
     {% block extra_scripts %}{% endblock %}
 </body>
-
 </html>

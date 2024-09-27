@@ -8,12 +8,18 @@
   }
   
 body {
-    font-family: 'Roboto', sans-serif; /* Apply Google Font */
-    min-height: 75vh; /* Set minimum height for the body */
-    height: 100%;
-    margin: 0;
     display: flex;
     flex-direction: column;
+    min-height: 75vh; /* Set minimum height for the body */
+    font-family: 'Roboto', sans-serif; /* Apply Google Font */
+    height: 100%;
+    margin: 0;
+    
+    flex-direction: column;
+}
+.container {
+    flex-grow: 1; /* Let the container take up any remaining space */
+    min-height: 75vh; /* Ensure the container takes at least 75% of the viewport height */
 }
 
 /* Hero Image Styles */
@@ -498,4 +504,8 @@ body {
 
 .signup-form .btn {
     width: 100%;
+}
+
+html, body {
+    height: 100%; /* Make sure the body and html fill the full height of the viewport */
 }

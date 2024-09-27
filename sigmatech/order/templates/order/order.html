@@ -86,19 +86,19 @@
 
         // Update the order status on the page
         document.querySelector(`#order-status-${orderId}`).innerText = orderStatus;
+
+        // Show popup notification using SweetAlert
+        Swal.fire({
+            title: 'Order Update',
+            text: `Your order #${orderId} status has been updated to "${orderStatus}".`,
+            icon: 'info',
+            confirmButtonText: 'Okay'
+        });
     };
 
     orderSocket.onclose = function(e) {
         console.error('WebSocket closed unexpectedly');
     };
-
-    // Function to send order status updates
-    function updateOrderStatus(orderId, orderStatus) {
-        orderSocket.send(JSON.stringify({
-            'order_id': orderId,
-            'order_status': orderStatus
-        }));
-    }
 </script>
 
 {% block extra_styles %}
